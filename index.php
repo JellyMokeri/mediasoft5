@@ -9,7 +9,6 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Document</title>
     </head>
-
     <body>
     <div class="reg-form"></div>
      <div>
@@ -24,6 +23,9 @@
         <?php
        </form>
      </div>
+    
+<?php q($_POST)?>
+          
 <?php $validate = valid($_POST) ?> 
   
 <?php if (!empty($validate['error']) && $validate['error']: ?>
@@ -35,12 +37,19 @@
 <?php endif; ?>
 
 <?php if (!empty($validate['success']) && $validate['success']: ?>
-    <?php foreach($validate['messages'] as $message): ?>
+    <?php foreach (getUsers() as $user):?>
       <p style="color: green">
-        <?= $message ?>
+         <?= $user ['name']?>    <?= $user ['email']?>   <?= $user ['age']?>
       </p>
     <?php endforeach; ?>
 <?php endif; ?>
+          
+<style lang="css">
+    .reg-form{
+        text-align: center;
+        width: 100%;
+    }
+</style>
 
 </body>
 </html>
