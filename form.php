@@ -41,7 +41,7 @@ function q($post) {
 
             $constrains = [
                 'name' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name),
-                'age' => preg_match("/[^0-9]/", $age),
+                'age' => preg_match("/^([0-9])+$/", $age),
             ];
 
             $validateForm = validData($name, $email, $age, $constrains);
@@ -65,9 +65,9 @@ function q($post) {
                 $validate['success'] = true;
                 q($post);
                 array_push($validate['messages'],
-                    "Ваше имя:$name",
-                    "Ваша почта:$email",
-                    "Ваш возраст:$age"
+                    "Ваше имя: $name",
+                    "Ваша почта: $email",
+                    "Ваш возраст: $age"
                 );
             }
         }
@@ -91,7 +91,7 @@ function q($post) {
             $validateForm['email'] = false;
         }
 
-        if (!preg_match("/[^0-9]/", $age)) {
+        if (!preg_match("/^([0-9])+$/", $age)) {
             $validateForm['age'] = false;
         }
 
