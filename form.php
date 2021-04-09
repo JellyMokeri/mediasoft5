@@ -63,6 +63,7 @@ function q($post) {
 
             if (!$validate['error']) {
                 $validate['success'] = true;
+                q($post);
                 array_push($validate['messages'],
                     "Ваше имя:$name",
                     "Ваша почта:$email",
