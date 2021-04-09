@@ -23,12 +23,10 @@
         <?php
        </form>
      </div>
-    
-<?php q($_POST)?>
-          
+              
 <?php $validate = valid($_POST) ?> 
   
-<?php if (!empty($validate['error']) && $validate['error']: ?>
+<?php if (!empty($validate['error']) && $validate['error']): ?>
     <?php foreach($validate['messages'] as $message): ?>
       <p style="color: red">
         <?= $message ?>
@@ -36,7 +34,8 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (!empty($validate['success']) && $validate['success']: ?>
+<?php if (!empty($validate['success']) && $validate['success']): ?>
+          <?php q($_POST)?>
     <?php foreach (getUsers() as $user):?>
       <p style="color: green">
          <?= $user ['name']?>    <?= $user ['email']?>   <?= $user ['age']?>
