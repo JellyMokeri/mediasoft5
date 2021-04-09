@@ -33,9 +33,14 @@
       </p>
     <?php endforeach; ?>
 <?php endif; ?>
-
-<?php if (!empty($validate['success']) && $validate['success']): ?>
-          <?php q($_POST)?>
+          
+<?php if (!empty($validate['success']) && $validate['success']: ?>
+    <?php foreach($validate['messages'] as $message): ?>
+      <p style="color: green">
+        <?= $message ?>
+      </p>
+    <?php endforeach; ?>
+  <?php q($_POST) ?>
     <?php foreach (getUsers() as $user):?>
       <p style="color: green">
          <?= $user ['name']?>    <?= $user ['email']?>   <?= $user ['age']?>
