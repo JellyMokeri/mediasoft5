@@ -1,5 +1,32 @@
 <?php
 
+$host = 'localhost';
+$dbname = 'test1';
+$port = '5432';
+$user = 'postgres';
+$password = 'admin';
+
+
+$conn = new PDO("pgsql:host={$host};port={$port};dbname={$dbname};user={$user};password={$password}");
+
+function getUsers (): array {
+    global $conn;
+    return $conn->query('select * from users')->fetchAll(PDO::FETCH_ASSOC);
+
+}
+
+function q($post) {
+    
+    global $conn;
+    $st = $conn->prepare("insert into users (name, email, age, work_id) values (?, ?, ?, ?)");
+
+    $st->execute([
+        $post['name'],
+        $post['email'],
+        $post['age'],
+        0,
+    ]);
+
 function valid(array $post): array
 {
     $validate = [
@@ -8,7 +35,7 @@ function valid(array $post): array
         'messages' => [],
     ];
 
-    if (!empty($post['name']) && !empty($post['email']) && !empty($post['fage'])) {
+    if (!empty($post['name']) && !empty($post['email']) && !empty($post['age'])) {
         $name = trim($post['name']);
         $email = trim($post['email']);
         $age = trim($post['age']);
@@ -16,7 +43,7 @@ function valid(array $post): array
         $constrains = [
             'name' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name),
             'email' => 3,
-            'age' => 4
+            'age' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name),
         ];
 
         $validateForm = valigData($name, $email, $age, $constrains);      
@@ -33,16 +60,15 @@ function valid(array $post): array
 
         if (!$validateForm['age']) {
             array_push($validate['messages'],
-                "Пароль должен быть не менее $constrains['password'] символов");
+                "Возраст может содержать только цифры");
         }
 
         if (!$validate['error']){
             $validate['success'] = true;
             array_push($validate['messages'],
                 "Ваше имя:$name",
-                "Ваша фамилия:$email"
-                "Ваш логин:$age",
-                "Ваш пароль:$password",
+                "Ваша почта:$email"
+                "Ваш возраст:$age",
             );
         }
     }
@@ -53,10 +79,9 @@ function valid(array $post): array
 function valigData(string $name, string $email, string $age, array $constrains): array{
 
     $validateForm = [
-        'login' => true,
-        'password' => true,
-        'firstname' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $firstname),
-        'lastname' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $lastname)
+        'name' => true,
+        'email' => true,
+        'age' => true,
     ];
 
     if (strlen($login) < $constrains['login']) {
