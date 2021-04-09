@@ -42,11 +42,10 @@ function valid(array $post): array
 
         $constrains = [
             'name' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name),
-            'email' => 3,
-            'age' => preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name),
+            'age' => preg_match("/[^0-9]/", $age),
         ];
 
-        $validateForm = valigData($name, $email, $age, $constrains);      
+        $validateForm = validData($name, $email, $age, $constrains);      
       
         if (!$validateForm['name']) {
             array_push($validate['messages'],
@@ -55,7 +54,7 @@ function valid(array $post): array
 
         if (!$validateForm['email']) {
             array_push($validate['messages'],
-                "Логин должен быть не менее $constrains['login'] символов");
+                "Почта введена неправильно");
         }
 
         if (!$validateForm['age']) {
@@ -76,7 +75,7 @@ function valid(array $post): array
 
 }
 
-function valigData(string $name, string $email, string $age, array $constrains): array{
+function validData(string $name, string $email, string $age, array $constrains): array{
 
     $validateForm = [
         'name' => true,
@@ -84,16 +83,17 @@ function valigData(string $name, string $email, string $age, array $constrains):
         'age' => true,
     ];
 
-    if (strlen($login) < $constrains['login']) {
-        $validateForm['login'] = false;
+    if (!preg_match("/^[а-яА-Яa-zA-Z]+$/u", $name) {
+        $validateForm['name'] = false;
+    }
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $validateForm['email'] = false;
     }
 
-    if (strlen($password) < $constrains['password']) {
-        $validateForm['password'] = false;
-    }
-
-    if (!$name) {
-        $validateForm['firstname'] = false;
+    if (!preg_match("/[^0-9]/", $age) {
+        $validateForm['age'] = false;
+        
     }
 
     return $validateForm;
